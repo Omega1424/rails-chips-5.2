@@ -7,10 +7,14 @@ class MoviesController < ApplicationController
   end
 
   def index
+    session[:ratings] = params[:ratings] if params[:ratings]
+    session[:sort] = params[:sort] if params[:sort]
     @all_ratings = Movie.pluck(:rating).uniq
-    @ratings_to_show = params[:ratings] ? params[:ratings].keys : @all_ratings
+    ratings_filter = params[:ratings] || session[:ratings]
+    @ratings_to_show = ratings_filter ? ratings_filter.keys : @all_ratings
     @movies = Movie.with_ratings(@ratings_to_show)
-    @movies = @movies.order(params[:sort]) if params[:sort] 
+    sort_order = params[:sort] || session[:sort]
+    @movies = @movies.order(sort_order)
   end
 
   def new
