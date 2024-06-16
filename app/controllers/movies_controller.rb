@@ -15,6 +15,7 @@ class MoviesController < ApplicationController
     @movies = Movie.with_ratings(@ratings_to_show)
     sort_order = params[:sort] || session[:sort]
     @movies = @movies.order(sort_order)
+    @sort = sort_order
   end
 
   def new
