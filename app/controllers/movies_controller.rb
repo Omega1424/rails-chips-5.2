@@ -44,4 +44,10 @@ class MoviesController < ApplicationController
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
+
+  def index
+    @all_ratings = Movie.pluck(:rating).uniq  # Get all unique ratings from the database
+    @ratings_to_show = params[:ratings] ? params[:ratings].keys : @all_ratings
+    @movies = Movie.with_ratings(@ratings_to_show)
+  end
 end
