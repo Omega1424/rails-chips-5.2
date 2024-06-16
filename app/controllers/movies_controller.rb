@@ -10,6 +10,7 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.pluck(:rating).uniq
     @ratings_to_show = params[:ratings] ? params[:ratings].keys : @all_ratings
     @movies = Movie.with_ratings(@ratings_to_show)
+    @movies = @movies.order(params[:sort]) if params[:sort] 
   end
 
   def new
